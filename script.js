@@ -4,7 +4,7 @@ let state={...defaults};
 
 const I={
   ko:{
-    userInfoEyebrow:'TRAVEL SETUP', userInfoTitle:'사용자 정보', areaLabel:'여행 지역', interestLabel:'관심사', groupLabel:'동행 유형', durationLabel:'기간', budgetLabel:'예산', applyBtn:'실행',
+    userInfoEyebrow:'TRAVEL SETUP', userInfoTitle:'사용자 정보', areaLabel:'여행 지역', interestLabel:'관심사', groupLabel:'동행 유형', durationLabel:'기간', budgetLabel:'예산', applyBtn:'실행', freeInputPlaceholder:'예: 홍대 근처 혼자 먹기 좋은 저녁 추천해줘', sendBtn:'전송', freeAnswerTitle:'요청 반영 결과',
     mustVisit:'Must Visit', map:'지도', translateShort:'번역', shortcutLabel:'바로가기', officialHomepage:'홈페이지 연결', featuredTitle:'대표 추천 장소', featuredSub:'대표 3곳', morePlaceTitle:'추가 장소 선택', morePlaceSub:'선택 버튼으로 변경',
     itineraryEyebrow:'CURATED JOURNEY', foodEyebrow:'CURATED', transportEyebrow:'NAVIGATION GUIDE',
     transportTitle:'교통편 안내', subway:'지하철', bus:'버스', phraseTitle:'상황별 한국어 표현', translateTitle:'실시간 통역 & 번역기', translatePlaceholder:'번역할 문장을 입력하세요 (Type here...)', googleTranslate:'구글번역기 열기',
@@ -18,7 +18,7 @@ const I={
     foodHeroIntro:'선택한 장소 주변에서 즐길 수 있는 추천 스폿을 카드 형태로 보여드려요.'
   },
   en:{
-    userInfoEyebrow:'TRAVEL SETUP', userInfoTitle:'Traveler Info', areaLabel:'Travel Area', interestLabel:'Interest', groupLabel:'Travel Type', durationLabel:'Duration', budgetLabel:'Budget', applyBtn:'Apply',
+    userInfoEyebrow:'TRAVEL SETUP', userInfoTitle:'Traveler Info', areaLabel:'Travel Area', interestLabel:'Interest', groupLabel:'Travel Type', durationLabel:'Duration', budgetLabel:'Budget', applyBtn:'Apply', freeInputPlaceholder:'Ex: Recommend a solo dinner spot near Hongdae', sendBtn:'Send', freeAnswerTitle:'Request Applied',
     mustVisit:'Must Visit', map:'Map', translateShort:'Translate', shortcutLabel:'Shortcut', officialHomepage:'Official Website', featuredTitle:'Featured Places', featuredSub:'Top 3 picks', morePlaceTitle:'More Places', morePlaceSub:'Switch by button',
     itineraryEyebrow:'CURATED JOURNEY', foodEyebrow:'CURATED', transportEyebrow:'NAVIGATION GUIDE',
     transportTitle:'Transit Guide', subway:'Subway', bus:'Bus', phraseTitle:'Useful Korean Phrases', translateTitle:'Live Interpreter & Translator', translatePlaceholder:'Type a sentence to translate', googleTranslate:'Open Google Translate',
@@ -337,6 +337,43 @@ function renderPhrases(){
     </article>
   `).join('');
 }
+
+function handleFreeInput(){
+  const input=document.getElementById('freeInput');
+  const box=document.getElementById('freeAnswer');
+  if(!input || !box) return;
+  const text=input.value.trim();
+  if(!text) return;
+
+  const lower=text.toLowerCase();
+  const foundPlace=places.find(p =>
+    lower.includes(p.ko.toLowerCase()) ||
+    lower.includes(p.en.toLowerCase()) ||
+    lower.includes(p.en.toLowerCase().split(' ')[0])
+  );
+  if(foundPlace) state.place=foundPlace.id;
+
+  if(text.includes('카페') || lower.includes('cafe')) state.interest=1;
+  if(text.includes('맛집') || text.includes('먹') || text.includes('저녁') || text.includes('점심') || lower.includes('food') || lower.includes('dinner') || lower.includes('lunch')) state.interest=0;
+
+  if(text.includes('1일') || lower.includes('1 day')) state.duration=0;
+  if(text.includes('2일') || lower.includes('2 day')) state.duration=1;
+  if(text.includes('3일') || lower.includes('3 day')) state.duration=2;
+
+  renderAll();
+
+  const place=placeById(state.place);
+  const kind=interestKind()==='cafe' ? (state.lang==='ko'?'카페':'cafe') : (state.lang==='ko'?'맛집':'food');
+  const summary=state.lang==='ko'
+    ? `${place.ko} 기준으로 ${kind} 추천과 일정 정보를 업데이트했습니다. 아래 하단 메뉴에서 일정, 맛집, 교통, 표현을 확인할 수 있습니다.`
+    : `Updated recommendations for ${place.en} with ${kind} preferences. Use the bottom menu to check Schedule, Food, Transit, and Expressions.`;
+
+  box.innerHTML=`<div class="free-answer-title">${t('freeAnswerTitle')}</div><p>${summary}</p>`;
+  box.classList.add('show');
+  input.value='';
+  showSection('foodSection');
+}
+
 function renderAll(){
   applyI18n();
   renderHero();
@@ -365,6 +402,10 @@ function showSection(id){
 }
 function resetHome(){
   state={...defaults,lang:state.lang};
+  const box=document.getElementById('freeAnswer');
+  if(box){box.classList.remove('show');box.innerHTML='';}
+  const input=document.getElementById('freeInput');
+  if(input) input.value='';
   renderAll();
   showSection('homeSection');
 }
@@ -372,6 +413,12 @@ function resetHome(){
 document.getElementById('koBtn').onclick=()=>{state.lang='ko';renderAll();};
 document.getElementById('enBtn').onclick=()=>{state.lang='en';renderAll();};
 document.getElementById('applyBtn').onclick=()=>{syncStateFromInputs();renderAll();showSection('itinerarySection');};
+
+const freeSendBtn=document.getElementById('freeSendBtn');
+const freeInput=document.getElementById('freeInput');
+if(freeSendBtn) freeSendBtn.onclick=handleFreeInput;
+if(freeInput) freeInput.addEventListener('keydown',e=>{if(e.key==='Enter') handleFreeInput();});
+
 document.getElementById('googleTranslateBtn').onclick=()=>{window.open(linkForTranslate(document.getElementById('translateInput').value.trim()),'_blank');};
 document.querySelectorAll('.bottom-nav button').forEach(btn=>btn.addEventListener('click',()=>{
   if(btn.dataset.role==='home'){resetHome();return;}

@@ -332,3 +332,58 @@ a{text-decoration:none}
 }
 
 .route-mini-map{display:none!important;}
+
+/* v14 free input */
+.free-question-card{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  margin-top:12px;
+  background:#fff;
+  border:1px solid var(--outline);
+  border-radius:18px;
+  padding:8px;
+  box-shadow:var(--shadow);
+}
+.free-question-card input{
+  flex:1;
+  min-width:0;
+  border:none;
+  outline:none;
+  background:transparent;
+  padding:10px 8px;
+  font-size:13px;
+  color:var(--text);
+}
+.free-question-card button{
+  min-width:56px;
+  height:42px;
+  border:none;
+  border-radius:999px;
+  background:var(--primary);
+  color:#fff;
+  font-weight:800;
+  font-size:13px;
+}
+.free-answer-card{
+  display:none;
+  margin-top:10px;
+  background:#fff;
+  border:1px solid rgba(228,226,225,.9);
+  border-radius:18px;
+  padding:14px;
+  box-shadow:var(--shadow);
+}
+.free-answer-card.show{display:block}
+.free-answer-title{
+  font-size:13px;
+  font-weight:900;
+  color:var(--primary);
+  margin-bottom:6px;
+}
+.free-answer-card p{
+  margin:0;
+  font-size:13px;
+  line-height:1.55;
+  color:var(--muted);
+}
