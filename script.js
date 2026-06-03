@@ -371,7 +371,11 @@ function handleFreeInput(){
   box.innerHTML=`<div class="free-answer-title">${t('freeAnswerTitle')}</div><p>${summary}</p>`;
   box.classList.add('show');
   input.value='';
-  showSection('foodSection');
+  if(text.includes('일정') || lower.includes('plan') || lower.includes('itinerary') || lower.includes('schedule')){
+    showSection('itinerarySection');
+  }else{
+    showSection('foodSection');
+  }
 }
 
 function renderAll(){
@@ -395,18 +399,11 @@ function selectPlace(id){
   renderAll();
 }
 function showSection(id){
-  document.querySelectorAll('.page-section').forEach(sec=>sec.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
   document.querySelectorAll('.bottom-nav button').forEach(btn=>btn.classList.toggle('active', btn.dataset.target===id));
-  window.scrollTo({top:0,behavior:'smooth'});
+  const target=document.getElementById(id);
+  if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function resetHome(){
-  state={...defaults,lang:state.lang};
-  const box=document.getElementById('freeAnswer');
-  if(box){box.classList.remove('show');box.innerHTML='';}
-  const input=document.getElementById('freeInput');
-  if(input) input.value='';
-  renderAll();
   showSection('homeSection');
 }
 

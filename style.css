@@ -41,7 +41,7 @@ a{text-decoration:none}
 .lang-toggle{display:flex;gap:4px;background:#fff;border:1px solid var(--outline);padding:4px;border-radius:999px}
 .lang-toggle button{border:none;background:transparent;padding:6px 10px;border-radius:999px;color:var(--muted);font-size:12px;font-weight:700}
 .lang-toggle button.active{background:var(--primary);color:#fff}
-.page-section{display:none;padding:8px 16px 8px}
+.page-section{display:block;padding:8px 16px 8px;scroll-margin-top:78px}
 .page-section.active{display:block}
 .section-header{margin:8px 2px 18px}
 .section-header.compact{margin-top:28px;margin-bottom:14px}
@@ -386,4 +386,27 @@ a{text-decoration:none}
   font-size:13px;
   line-height:1.55;
   color:var(--muted);
+}
+
+/* v15 one-page result layout */
+#itinerarySection,#foodSection,#transportSection,#phraseSection{
+  padding-top:22px;
+}
+#itinerarySection::before,#foodSection::before,#transportSection::before,#phraseSection::before{
+  content:"";
+  display:block;
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--outline),transparent);
+  margin:0 0 22px;
+}
+.bottom-nav button{
+  transition:background .18s ease,color .18s ease,transform .18s ease;
+}
+.bottom-nav button:hover{
+  background:rgba(34,68,119,.10);
+  color:var(--primary);
+}
+.bottom-nav button.active:hover{
+  background:var(--primary-2);
+  color:#d6e3ff;
 }
