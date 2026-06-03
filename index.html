@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yeojeong Travel Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@500&family=Noto+Sans+KR:wght@400;500;700;800&family=Material+Symbols+Outlined:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="k-header-pattern"></div>
+      <div class="topbar-left">
+        <button class="icon-btn"><span class="material-symbols-outlined">menu</span></button>
+        
+        <div class="brand-block">
+          <div class="brand">K-Mate</div>
+          <div class="brand-sub">Korea Travel Companion</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="lang-toggle">
+          <button id="koBtn" class="active">KO</button>
+          <button id="enBtn">EN</button>
+        </div>
+        <div class="avatar" title="User Persona"><span class="material-symbols-outlined">person</span></div>
+      </div>
+    </header>
+
+    <section id="homeSection" class="page-section active">
+      <div class="section-header">
+        <div class="eyebrow" data-i18n="userInfoEyebrow">TRAVEL SETUP</div>
+        <h2 data-i18n="userInfoTitle">사용자 정보</h2>
+      </div>
+
+      <div class="card form-card">
+        <label><span data-i18n="areaLabel">여행 지역</span><select id="areaSelect"></select></label>
+        <label><span data-i18n="interestLabel">관심사</span><select id="interestSelect"></select></label>
+        <label><span data-i18n="groupLabel">동행 유형</span><select id="groupSelect"></select></label>
+        <label><span data-i18n="durationLabel">기간</span><select id="durationSelect"></select></label>
+        <label><span data-i18n="budgetLabel">예산</span><select id="budgetSelect"></select></label>
+        <button id="applyBtn" class="primary-btn" data-i18n="applyBtn">실행</button>
+      </div>
+
+      <div class="card hero-card">
+        <div id="heroImage" class="hero-visual"></div>
+        <div class="hero-copy">
+          <div class="hero-badge" data-i18n="mustVisit">Must Visit</div>
+          <h3 id="heroTitle"></h3>
+          <p id="heroDesc"></p>
+          <div class="hero-actions">
+            <div class="shortcut-label" data-i18n="shortcutLabel">바로가기</div>
+            <a id="heroOfficialLink" class="primary-btn btn-inline" target="_blank">
+              <span class="material-symbols-outlined">fort</span>
+              <span data-i18n="officialHomepage">홈페이지 연결</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header compact">
+        <div>
+          <h3 data-i18n="featuredTitle">대표 추천 장소</h3>
+          <p data-i18n="featuredSub">대표 3곳</p>
+        </div>
+      </div>
+      <div id="featuredPlaces" class="horizontal-list"></div>
+
+      <div class="section-header compact">
+        <div>
+          <h3 data-i18n="morePlaceTitle">추가 장소 선택</h3>
+          <p data-i18n="morePlaceSub">선택 버튼으로 변경</p>
+        </div>
+      </div>
+      <div id="morePlaces" class="chip-wrap"></div>
+    </section>
+
+    <section id="itinerarySection" class="page-section">
+      <div class="section-header">
+        <div class="eyebrow" data-i18n="itineraryEyebrow">CURATED JOURNEY</div>
+        <h2 id="itineraryMainTitle"></h2>
+        <p id="itineraryIntro" class="section-intro"></p>
+      </div>
+      <div id="itineraryCards" class="stack-list"></div>
+    </section>
+
+    <section id="foodSection" class="page-section">
+      <div class="food-banner">
+        <div class="eyebrow light" data-i18n="foodEyebrow">CURATED</div>
+        <h2 id="foodMainTitle"></h2>
+        <p id="foodIntro"></p>
+      </div>
+      <div id="foodCards" class="stack-list"></div>
+    </section>
+
+    <section id="transportSection" class="page-section">
+      <div class="section-header">
+        <div class="eyebrow" data-i18n="transportEyebrow">NAVIGATION GUIDE</div>
+        <h2 data-i18n="transportTitle">교통편 안내</h2>
+        <p class="micro-links"><span data-i18n="subway">지하철</span> · <span data-i18n="bus">버스</span> · Uber · Kakao T</p>
+      </div>
+      <div id="transportCards" class="stack-list"></div>
+      <p class="center-note" data-i18n="routeNote">실시간 도착 정보와 요금은 해당 앱에서 최종 확인해 주세요.</p>
+    </section>
+
+    <section id="phraseSection" class="page-section">
+      <div class="section-header with-link">
+        <h2 data-i18n="phraseTitle">상황별 한국어 표현</h2>
+        <button id="seeAllExpressionsBtn" class="text-link">See All <span class="material-symbols-outlined">chevron_right</span></button>
+      </div>
+      <div id="phraseCards" class="stack-list"></div>
+
+      <div class="section-header compact only-top">
+        <h3 data-i18n="translateTitle">실시간 통역 & 번역기</h3>
+      </div>
+      <div class="card translator-card">
+        <textarea id="translateInput" data-i18n-placeholder="translatePlaceholder" placeholder="번역할 문장을 입력하세요"></textarea>
+        <div class="translator-actions">
+          <select id="translateMode">
+            <option value="en-ko">English → Korean</option>
+            <option value="ko-en">Korean → English</option>
+          </select>
+          <button id="googleTranslateBtn" class="primary-btn" data-i18n="googleTranslate">구글번역기 열기</button>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-icon"><span class="material-symbols-outlined">lightbulb</span></div>
+        <div>
+          <div class="tip-title">Travel Tip</div>
+          <div id="travelTipText" class="tip-text"></div>
+        </div>
+      </div>
+    </section>
+
+    <nav class="bottom-nav">
+      <button data-target="homeSection" data-role="home" class="active"><span class="material-symbols-outlined">home</span><span data-i18n="navHome">Home</span></button>
+      <button data-target="itinerarySection"><span class="material-symbols-outlined">event</span><span data-i18n="navSchedule">Schedule</span></button>
+      <button data-target="foodSection"><span class="material-symbols-outlined">restaurant</span><span data-i18n="navFood">Food</span></button>
+      <button data-target="transportSection"><span class="material-symbols-outlined">directions_bus</span><span data-i18n="navTransit">Transit</span></button>
+      <button data-target="phraseSection"><span class="material-symbols-outlined">record_voice_over</span><span data-i18n="navExpression">Expressions</span></button>
+    </nav>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
